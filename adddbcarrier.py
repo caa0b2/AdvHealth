@@ -1,0 +1,188 @@
+import csv
+import sqlite3
+
+conn = sqlite3.connect('advhealth.sqlite')
+cur = conn.cursor()
+
+cur.executescript('''
+DROP TABLE IF EXISTS Carrier;
+
+CREATE TABLE Carrier (
+    DESYNPUF_ID         TEXT,
+    CLM_ID              TEXT,
+    CLM_FROM_DT         DATE,
+    CLM_THRU_DT         DATE,
+    ICD9_DGNS_CD_1      TEXT,
+    ICD9_DGNS_CD_2      TEXT,
+    ICD9_DGNS_CD_3      TEXT,
+    ICD9_DGNS_CD_4      TEXT,
+    ICD9_DGNS_CD_5      TEXT,
+    ICD9_DGNS_CD_6      TEXT,
+    ICD9_DGNS_CD_7      TEXT,
+    ICD9_DGNS_CD_8      TEXT,
+    PRF_PHYSN_NPI_1     TEXT,
+    PRF_PHYSN_NPI_2     TEXT,
+    PRF_PHYSN_NPI_3     TEXT,
+    PRF_PHYSN_NPI_4     TEXT,
+    PRF_PHYSN_NPI_5     TEXT,
+    PRF_PHYSN_NPI_6     TEXT,
+    PRF_PHYSN_NPI_7     TEXT,
+    PRF_PHYSN_NPI_8     TEXT,
+    PRF_PHYSN_NPI_9     TEXT,
+    PRF_PHYSN_NPI_10    TEXT,
+    PRF_PHYSN_NPI_11    TEXT,
+    PRF_PHYSN_NPI_12    TEXT,
+    PRF_PHYSN_NPI_13    TEXT,
+    TAX_NUM_1           TEXT,
+    TAX_NUM_2           TEXT,
+    TAX_NUM_3           TEXT,
+    TAX_NUM_4           TEXT,
+    TAX_NUM_5           TEXT,
+    TAX_NUM_6           TEXT,
+    TAX_NUM_7           TEXT,
+    TAX_NUM_8           TEXT,
+    TAX_NUM_9           TEXT,
+    TAX_NUM_10          TEXT,
+    TAX_NUM_11          TEXT,
+    TAX_NUM_12          TEXT,
+    TAX_NUM_13          TEXT,
+    HCPCS_CD_1          TEXT,
+    HCPCS_CD_2          TEXT,
+    HCPCS_CD_3          TEXT,
+    HCPCS_CD_4          TEXT,
+    HCPCS_CD_5          TEXT,
+    HCPCS_CD_6          TEXT,
+    HCPCS_CD_7          TEXT,
+    HCPCS_CD_8          TEXT,
+    HCPCS_CD_9          TEXT,
+    HCPCS_CD_10         TEXT,
+    HCPCS_CD_11         TEXT,
+    HCPCS_CD_12         TEXT,
+    HCPCS_CD_13         TEXT,
+    LINE_NCH_PMT_AMT_1      INTEGER,
+    LINE_NCH_PMT_AMT_2      INTEGER,
+    LINE_NCH_PMT_AMT_3      INTEGER,
+    LINE_NCH_PMT_AMT_4      INTEGER,
+    LINE_NCH_PMT_AMT_5      INTEGER,
+    LINE_NCH_PMT_AMT_6      INTEGER,
+    LINE_NCH_PMT_AMT_7      INTEGER,
+    LINE_NCH_PMT_AMT_8      INTEGER,
+    LINE_NCH_PMT_AMT_9      INTEGER,
+    LINE_NCH_PMT_AMT_10     INTEGER,
+    LINE_NCH_PMT_AMT_11     INTEGER,
+    LINE_NCH_PMT_AMT_12     INTEGER,
+    LINE_NCH_PMT_AMT_13     INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_1      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_2      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_3      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_4      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_5      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_6      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_7      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_8      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_9      INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_10     INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_11     INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_12     INTEGER,
+    LINE_BENE_PTB_DDCTBL_AMT_13     INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_1        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_2        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_3        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_4        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_5        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_6        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_7        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_8        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_9        INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_10       INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_11       INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_12       INTEGER,
+    LINE_BENE_PRMRY_PYR_PD_AMT_13       INTEGER,
+    LINE_COINSRNC_AMT_1         INTEGER,
+    LINE_COINSRNC_AMT_2         INTEGER,
+    LINE_COINSRNC_AMT_3         INTEGER,
+    LINE_COINSRNC_AMT_4         INTEGER,
+    LINE_COINSRNC_AMT_5         INTEGER,
+    LINE_COINSRNC_AMT_6         INTEGER,
+    LINE_COINSRNC_AMT_7         INTEGER,
+    LINE_COINSRNC_AMT_8         INTEGER,
+    LINE_COINSRNC_AMT_9         INTEGER,
+    LINE_COINSRNC_AMT_10        INTEGER,
+    LINE_COINSRNC_AMT_11        INTEGER,
+    LINE_COINSRNC_AMT_12        INTEGER,
+    LINE_COINSRNC_AMT_13        INTEGER,
+    LINE_ALOWD_CHRG_AMT_1       INTEGER,
+    LINE_ALOWD_CHRG_AMT_2       INTEGER,
+    LINE_ALOWD_CHRG_AMT_3       INTEGER,
+    LINE_ALOWD_CHRG_AMT_4       INTEGER,
+    LINE_ALOWD_CHRG_AMT_5       INTEGER,
+    LINE_ALOWD_CHRG_AMT_6       INTEGER,
+    LINE_ALOWD_CHRG_AMT_7       INTEGER,
+    LINE_ALOWD_CHRG_AMT_8       INTEGER,
+    LINE_ALOWD_CHRG_AMT_9       INTEGER,
+    LINE_ALOWD_CHRG_AMT_10      INTEGER,
+    LINE_ALOWD_CHRG_AMT_11      INTEGER,
+    LINE_ALOWD_CHRG_AMT_12      INTEGER,
+    LINE_ALOWD_CHRG_AMT_13      INTEGER,
+    LINE_PRCSG_IND_CD_1         TEXT,
+    LINE_PRCSG_IND_CD_2         TEXT,
+    LINE_PRCSG_IND_CD_3         TEXT,
+    LINE_PRCSG_IND_CD_4         TEXT,
+    LINE_PRCSG_IND_CD_5         TEXT,
+    LINE_PRCSG_IND_CD_6         TEXT,
+    LINE_PRCSG_IND_CD_7         TEXT,
+    LINE_PRCSG_IND_CD_8         TEXT,
+    LINE_PRCSG_IND_CD_9         TEXT,
+    LINE_PRCSG_IND_CD_10        TEXT,
+    LINE_PRCSG_IND_CD_11        TEXT,
+    LINE_PRCSG_IND_CD_12        TEXT,
+    LINE_PRCSG_IND_CD_13        TEXT,
+    LINE_ICD9_DGNS_CD_1         TEXT,
+    LINE_ICD9_DGNS_CD_2         TEXT,
+    LINE_ICD9_DGNS_CD_3         TEXT,
+    LINE_ICD9_DGNS_CD_4         TEXT,
+    LINE_ICD9_DGNS_CD_5         TEXT,
+    LINE_ICD9_DGNS_CD_6         TEXT,
+    LINE_ICD9_DGNS_CD_7         TEXT,
+    LINE_ICD9_DGNS_CD_8         TEXT,
+    LINE_ICD9_DGNS_CD_9         TEXT,
+    LINE_ICD9_DGNS_CD_10        TEXT,
+    LINE_ICD9_DGNS_CD_11        TEXT,
+    LINE_ICD9_DGNS_CD_12        TEXT,
+    LINE_ICD9_DGNS_CD_13        TEXT
+);
+
+''')
+
+
+# carrier data
+with open('cms_2008_to_2010_Carrier_Claims_20A.csv', 'r') as csvfile:
+    csvreader = csv.reader(csvfile)
+    next(csvreader) # skip header row
+    for row in csvreader:
+        row = ['.' if x == '' else x for x in row]
+        conn.execute('INSERT INTO Carrier (DESYNPUF_ID, CLM_ID, CLM_FROM_DT, CLM_THRU_DT, ICD9_DGNS_CD_1, ICD9_DGNS_CD_2, ICD9_DGNS_CD_3, ICD9_DGNS_CD_4, ICD9_DGNS_CD_5, ICD9_DGNS_CD_6, ICD9_DGNS_CD_7, ICD9_DGNS_CD_8, PRF_PHYSN_NPI_1, PRF_PHYSN_NPI_2, PRF_PHYSN_NPI_3, PRF_PHYSN_NPI_4, PRF_PHYSN_NPI_5, PRF_PHYSN_NPI_6, PRF_PHYSN_NPI_7, PRF_PHYSN_NPI_8, PRF_PHYSN_NPI_9, PRF_PHYSN_NPI_10, PRF_PHYSN_NPI_11, PRF_PHYSN_NPI_12, PRF_PHYSN_NPI_13, TAX_NUM_1, TAX_NUM_2, TAX_NUM_3, TAX_NUM_4, TAX_NUM_5, TAX_NUM_6, TAX_NUM_7, TAX_NUM_8, TAX_NUM_9, TAX_NUM_10, TAX_NUM_11, TAX_NUM_12, TAX_NUM_13, HCPCS_CD_1, HCPCS_CD_2, HCPCS_CD_3, HCPCS_CD_4, HCPCS_CD_5, HCPCS_CD_6, HCPCS_CD_7, HCPCS_CD_8, HCPCS_CD_9, HCPCS_CD_10, HCPCS_CD_11, HCPCS_CD_12, HCPCS_CD_13, LINE_NCH_PMT_AMT_1, LINE_NCH_PMT_AMT_2, LINE_NCH_PMT_AMT_3, LINE_NCH_PMT_AMT_4, LINE_NCH_PMT_AMT_5, LINE_NCH_PMT_AMT_6, LINE_NCH_PMT_AMT_7, LINE_NCH_PMT_AMT_8, LINE_NCH_PMT_AMT_9, LINE_NCH_PMT_AMT_10, LINE_NCH_PMT_AMT_11, LINE_NCH_PMT_AMT_12, LINE_NCH_PMT_AMT_13, LINE_BENE_PTB_DDCTBL_AMT_1, LINE_BENE_PTB_DDCTBL_AMT_2, LINE_BENE_PTB_DDCTBL_AMT_3, LINE_BENE_PTB_DDCTBL_AMT_4, LINE_BENE_PTB_DDCTBL_AMT_5, LINE_BENE_PTB_DDCTBL_AMT_6, LINE_BENE_PTB_DDCTBL_AMT_7, LINE_BENE_PTB_DDCTBL_AMT_8, LINE_BENE_PTB_DDCTBL_AMT_9, LINE_BENE_PTB_DDCTBL_AMT_10, LINE_BENE_PTB_DDCTBL_AMT_11, LINE_BENE_PTB_DDCTBL_AMT_12, LINE_BENE_PTB_DDCTBL_AMT_13, LINE_BENE_PRMRY_PYR_PD_AMT_1, LINE_BENE_PRMRY_PYR_PD_AMT_2, LINE_BENE_PRMRY_PYR_PD_AMT_3, LINE_BENE_PRMRY_PYR_PD_AMT_4, LINE_BENE_PRMRY_PYR_PD_AMT_5, LINE_BENE_PRMRY_PYR_PD_AMT_6, LINE_BENE_PRMRY_PYR_PD_AMT_7, LINE_BENE_PRMRY_PYR_PD_AMT_8, LINE_BENE_PRMRY_PYR_PD_AMT_9, LINE_BENE_PRMRY_PYR_PD_AMT_10, LINE_BENE_PRMRY_PYR_PD_AMT_11, LINE_BENE_PRMRY_PYR_PD_AMT_12, LINE_BENE_PRMRY_PYR_PD_AMT_13, LINE_COINSRNC_AMT_1, LINE_COINSRNC_AMT_2, LINE_COINSRNC_AMT_3, LINE_COINSRNC_AMT_4, LINE_COINSRNC_AMT_5, LINE_COINSRNC_AMT_6, LINE_COINSRNC_AMT_7, LINE_COINSRNC_AMT_8, LINE_COINSRNC_AMT_9, LINE_COINSRNC_AMT_10, LINE_COINSRNC_AMT_11, LINE_COINSRNC_AMT_12, LINE_COINSRNC_AMT_13, LINE_ALOWD_CHRG_AMT_1, LINE_ALOWD_CHRG_AMT_2, LINE_ALOWD_CHRG_AMT_3, LINE_ALOWD_CHRG_AMT_4, LINE_ALOWD_CHRG_AMT_5, LINE_ALOWD_CHRG_AMT_6, LINE_ALOWD_CHRG_AMT_7, LINE_ALOWD_CHRG_AMT_8, LINE_ALOWD_CHRG_AMT_9, LINE_ALOWD_CHRG_AMT_10, LINE_ALOWD_CHRG_AMT_11, LINE_ALOWD_CHRG_AMT_12, LINE_ALOWD_CHRG_AMT_13, LINE_PRCSG_IND_CD_1, LINE_PRCSG_IND_CD_2, LINE_PRCSG_IND_CD_3, LINE_PRCSG_IND_CD_4, LINE_PRCSG_IND_CD_5, LINE_PRCSG_IND_CD_6, LINE_PRCSG_IND_CD_7, LINE_PRCSG_IND_CD_8, LINE_PRCSG_IND_CD_9, LINE_PRCSG_IND_CD_10, LINE_PRCSG_IND_CD_11, LINE_PRCSG_IND_CD_12, LINE_PRCSG_IND_CD_13, LINE_ICD9_DGNS_CD_1, LINE_ICD9_DGNS_CD_2, LINE_ICD9_DGNS_CD_3, LINE_ICD9_DGNS_CD_4, LINE_ICD9_DGNS_CD_5, LINE_ICD9_DGNS_CD_6, LINE_ICD9_DGNS_CD_7, LINE_ICD9_DGNS_CD_8, LINE_ICD9_DGNS_CD_9, LINE_ICD9_DGNS_CD_10, LINE_ICD9_DGNS_CD_11, LINE_ICD9_DGNS_CD_12, LINE_ICD9_DGNS_CD_13) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    (row[0], row[1], row[2][0:4] + '-' +row[2][4:6]+ '-' + row[2][6:], row[3][0:4] + '-' +row[3][4:6]+ '-' + row[3][6:], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19], row[20], row[21], row[22], row[23], row[24], row[25], row[26], row[27], row[28], row[29], row[30], row[31], row[32], row[33], row[34], row[35], row[36], row[37], row[38], row[39], row[40], row[41], row[42], row[43], row[44], row[45], row[46], row[47], row[48], row[49], row[50], row[51], row[52], row[53], row[54], row[55], row[56], row[57], row[58], row[59], row[60], row[61], row[62], row[63], row[64], row[65], row[66], row[67], row[68], row[69], row[70], row[71], row[72], row[73], row[74], row[75], row[76], row[77], row[78], row[79], row[80], row[81], row[82], row[83], row[84], row[85], row[86], row[87], row[88], row[89], row[90], row[91], row[92], row[93], row[94], row[95], row[96], row[97], row[98], row[99], row[100], row[101], row[102], row[103], row[104], row[105], row[106], row[107], row[108], row[109], row[110], row[111], row[112], row[113], row[114], row[115], row[116], row[117], row[118], row[119], row[120], row[121], row[122], row[123], row[124], row[125], row[126], row[127], row[128], row[129], row[130], row[131], row[132], row[133], row[134], row[135], row[136], row[137], row[138], row[139], row[140], row[141]))
+conn.commit()
+
+# 2,373,609 claims
+# Take steps to remove duplicates before creating complete database.
+
+cur.executescript('''
+CREATE TEMPORARY TABLE no_dups AS 
+SELECT CLM_ID, CLM_THRU_DT,
+    RANK() OVER (PARTITION BY CLM_ID ORDER BY CLM_THRU_DT DESC) as CLM_RANK
+FROM Carrier
+;
+
+DELETE FROM Carrier
+WHERE EXISTS (
+    SELECT clm_id, clm_thru_dt
+    FROM no_dups
+    where clm_rank > 1
+)
+''')
+
+# 2,373,609 final row count. Same as before.
+
+conn.close()
